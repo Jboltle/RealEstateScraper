@@ -1,11 +1,14 @@
 const axios = require('axios');
+const { error } = require('console');
 const fs = require('fs');
 const prompt = require('prompt-sync')({sigint: true});
 
 const main = async () => {
     
-    const location = prompt('Enter State: ')
-    const states = [
+    const state = prompt('Enter State: ')
+    const city = prompt('Enter City: ')
+  
+    const stateArray = [
         "Alabama",
         "Alaska",
         "Arizona",
@@ -57,39 +60,53 @@ const main = async () => {
         "Wisconsin",
         "Wyoming"
     ];
-    for (i = 0; i< states.length(); i++){
-        for (j = 0; location != states.some(); j++){     
-    console.log(`Invalid state:  ${location, err}`)
-}
-}
     
-    const url = 'https://zillow56.p.rapidapi.com/search?location=houston%2C%20tx';
+    for (let i = 0; i < stateArray.length ; i++){
+        
+             if (state.localeCompare(stateArray[i]) != 0)
+            {console.log(" ")}
+            else if (state.localeCompare(stateArray[i]) === 0) {
+                console.log("|" + `${stateArray[i]} ${city}`)
+                break
+                
+            }
+            
 
+        }
+    
+  
+   
+    const url = `https://zillow56.p.rapidapi.com/search??location=${city}%2C%20${state}`;
     const options = {
         method: 'GET',
         headers: {
-            'X-RapidAPI-Key': 'a7132bf501msh30f1dbfdf1bbbfep196a9bjsn5e49546130bd',
+            'X-RapidAPI-Key': 'fcd1f8b37fmsh10226835c1a10c3p1c739ejsn97ce11c60ac7',
             'X-RapidAPI-Host': 'zillow56.p.rapidapi.com'
-        }
+        },
+        
     };
-    
-    try {
+    console.log(url)
+ 
 
-        const response = await fetch(url, options);
+    const response = await fetch(url, options);
+    console.log(response )
+       if (response.status != 200){
+        console.log(url)
+        console.log(response.status)
+        console.err("Invalid Input: " + response.status)
+       }
+       
         const result = await response.text();
+        console.log(result)
         fs.writeFile('realEstateData.json', result, 'utf-8', (err) => {
-
-            if (err || !fs.existsSync) {
+            if (err || !fs.existsSync ) {
                 console.log("Cannot Find JSON File:", err)
+    
             }
-            else {console.log("JSON Data written")}
+            else {console.log("JSON Data written for " + city, state)}
+            console.log(result);
         }   )
     
-        console.log(result);
-    } catch (error) {
-        console.error(error);
-    }
-
 }
 main()
 
