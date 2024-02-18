@@ -2,7 +2,7 @@ const axios = require('axios');
 const { error } = require('console');
 const fs = require('fs');
 const prompt = require('prompt-sync')({sigint: true});
-
+const terminal = require('commander');
 const main = async () => {
     
     const state = prompt('Enter State: ')
@@ -60,23 +60,19 @@ const main = async () => {
         "Wisconsin",
         "Wyoming"
     ];
-    
-    for (let i = 0; i < stateArray.length ; i++){
-        
-             if (state.localeCompare(stateArray[i]) != 0)
-            {console.log(" ")}
-            else if (state.localeCompare(stateArray[i]) === 0) {
-                console.log("|" + `${stateArray[i]} ${city}`)
-                break
-                
-            }
-            
 
+    for (let i = 0; i < stateArray.length; i++) {
+        if (state.localeCompare(stateArray[i]) === 0) {
+            console.log(`| ${stateArray[i]} ${city}`);
+            break;
         }
+    }
+
+
     
-  
+
    
-    const url = `https://zillow56.p.rapidapi.com/search??location=${city}%2C%20${state}`;
+    const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
     const options = {
         method: 'GET',
         headers: {
@@ -91,22 +87,40 @@ const main = async () => {
     const response = await fetch(url, options);
     console.log(response )
        if (response.status != 200){
-        console.log(url)
-        console.log(response.status)
-        console.err("Invalid Input: " + response.status)
+        console.log(url + response.status `\n` + "Invalid Input: " + response.status)
+        return
        }
        
-        const result = await response.text();
-        console.log(result)
-        fs.writeFile('realEstateData.json', result, 'utf-8', (err) => {
-            if (err || !fs.existsSync ) {
-                console.log("Cannot Find JSON File:", err)
+    const result = await response.text();
+    console.log(result)
+    fs.appendFile('realEstateData.json', result, 'utf-8', (err) => {
+        if (err) {
+            console.error("Cannot write to JSON File:", err);
+            return;
+        }
+        console.log(`JSON Data written for ${city}, ${state}`);
+    });
     
-            }
-            else {console.log("JSON Data written for " + city, state)}
-            console.log(result);
-        }   )
-    
-}
-main()
+    fs.readFile('realEstateData.json', 'utf-8', (err, result) => {
+        if (err){
+            console.error("Error parsing JSON file: " , err)
 
+            return}
+        try{
+  
+            const picturesURL = result.profilePhotoSrc
+            const rating = result.reviewStarsRating
+            console.log(picturesURL)
+
+            
+            fs.appendFile('realEstateData.txt', picturesURL, 'utf-8', (err) => {
+                if (err) {
+                    console.error('Cannot write to Pictures file:', err);
+                    return;
+                }
+                console.log('Pictures data written to realEstateData.txt');
+            });
+        } catch (error) {
+            console.error("Error:", error);
+        }})}
+    main()
