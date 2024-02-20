@@ -1,8 +1,6 @@
-const axios = require('axios');
 const { error } = require('console');
 const fs = require('fs');
 const prompt = require('prompt-sync')({sigint: true});
-const terminal = require('commander');
 const main = async () => {
     
     const state = prompt('Enter State: ')
@@ -72,7 +70,7 @@ const main = async () => {
     
 
    
-    const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
+    /*const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
     const options = {
         method: 'GET',
         headers: {
@@ -93,6 +91,8 @@ const main = async () => {
        
     const result = await response.text();
     console.log(result)
+    */
+   let result = "null"
     fs.appendFile('realEstateData.json', result, 'utf-8', (err) => {
         if (err) {
             console.error("Cannot write to JSON File:", err);
@@ -101,26 +101,16 @@ const main = async () => {
         console.log(`JSON Data written for ${city}, ${state}`);
     });
     
-    fs.readFile('realEstateData.json', 'utf-8', (err, result) => {
-        if (err){
-            console.error("Error parsing JSON file: " , err)
-
-            return}
         try{
-  
-            const picturesURL = result.profilePhotoSrc
-            const rating = result.reviewStarsRating
-            console.log(picturesURL)
-
             
-            fs.appendFile('realEstateData.txt', picturesURL, 'utf-8', (err) => {
+            await  (fs.appendFile('realEstateData.txt', profilePhotoSrc.profilePhotoSrc, 'utf-8', (err) => {
                 if (err) {
                     console.error('Cannot write to Pictures file:', err);
                     return;
                 }
                 console.log('Pictures data written to realEstateData.txt');
-            });
+            }));
         } catch (error) {
             console.error("Error:", error);
-        }})}
+        }}
     main()
