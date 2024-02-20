@@ -3,68 +3,75 @@ const fs = require('fs');
 const prompt = require('prompt-sync')({sigint: true});
 const main = async () => {
     
-    const state = prompt('Enter State: ')
+      const state = prompt('Enter State: ')
     const city = prompt('Enter City: ')
-  
+    function stateCheck(state, city)
+    {
     const stateArray = [
-        "Alabama",
-        "Alaska",
-        "Arizona",
-        "Arkansas",
-        "California",
-        "Colorado",
-        "Connecticut",
-        "Delaware",
-        "Florida",
-        "Georgia",
-        "Hawaii",
-        "Idaho",
-        "Illinois",
-        "Indiana",
-        "Iowa",
-        "Kansas",
-        "Kentucky",
-        "Louisiana",
-        "Maine",
-        "Maryland",
-        "Massachusetts",
-        "Michigan",
-        "Minnesota",
-        "Mississippi",
-        "Missouri",
-        "Montana",
-        "Nebraska",
-        "Nevada",
-        "New Hampshire",
-        "New Jersey",
-        "New Mexico",
-        "New York",
-        "North Carolina",
-        "North Dakota",
-        "Ohio",
-        "Oklahoma",
-        "Oregon",
-        "Pennsylvania",
-        "Rhode Island",
-        "South Carolina",
-        "South Dakota",
-        "Tennessee",
-        "Texas",
-        "Utah",
-        "Vermont",
-        "Virginia",
-        "Washington",
-        "West Virginia",
-        "Wisconsin",
-        "Wyoming"
-    ];
-
+          "Alabama",
+          "Alaska",
+          "Arizona",
+          "Arkansas",
+          "California",
+          "Colorado",
+          "Connecticut",
+          "Delaware",
+          "Florida",
+          "Georgia",
+          "Hawaii",
+          "Idaho",
+          "Illinois",
+          "Indiana",
+          "Iowa",
+          "Kansas",
+          "Kentucky",
+          "Louisiana",
+          "Maine",
+          "Maryland",
+          "Massachusetts",
+          "Michigan",
+          "Minnesota",
+          "Mississippi",
+          "Missouri",
+          "Montana",
+          "Nebraska",
+          "Nevada",
+          "New Hampshire",
+          "New Jersey",
+          "New Mexico",
+          "New York",
+          "North Carolina",
+          "North Dakota",
+          "Ohio",
+          "Oklahoma",
+          "Oregon",
+          "Pennsylvania",
+          "Rhode Island",
+          "South Carolina",
+          "South Dakota",
+          "Tennessee",
+          "Texas",
+          "Utah",
+          "Vermont",
+          "Virginia",
+          "Washington",
+          "West Virginia",
+          "Wisconsin",
+          "Wyoming"
+      ];
     for (let i = 0; i < stateArray.length; i++) {
-        if (state.localeCompare(stateArray[i]) === 0) {
-            console.log(`| ${stateArray[i]} ${city}`);
-            break;
+        if (state.localeCompare(stateArray[i]) != 0) {
         }
-    }
+        if (state.localeCompare(stateArray[i]) === 0)
+        {console.log(`| ${stateArray[i]} ${city}`);
+        break;
+        }
+        else { console.error("Please Enter Valid State: ", error)
+         return undefined;
+        }
+    }}
+    stateCheck(state,city)
+
 
 
     
@@ -102,8 +109,10 @@ const main = async () => {
     });
     
         try{
-            
-            await  (fs.appendFile('realEstateData.txt', profilePhotoSrc.profilePhotoSrc, 'utf-8', (err) => {
+           let data = "./realEstateData.json"
+           let  realEstatePictureData = JSON.parse(data)
+           console.log(realEstatePictureData.profilePhotoSrc)
+            await  (fs.appendFile('realEstateData.txt', realEstatePictureData.profilePhotoSrc , 'utf-8', (err) => {
                 if (err) {
                     console.error('Cannot write to Pictures file:', err);
                     return;
