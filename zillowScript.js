@@ -1,61 +1,135 @@
-const axios = require('axios');
+const axios = requite('axios`')
+
+const { error } = require('console');
+
 const fs = require('fs');
-const prompt = require('prompt-sync')({ sigint: true });
-require('dotenv').config();
-
+const { url } = require('inspector');
+const prompt = require('prompt-sync')({sigint: true});
 const main = async () => {
-    try {
-        const state = prompt('Enter State: ');
-        const city = prompt('Enter City: ');
+    
+      const state = prompt('Enter State: ')
+    const city = prompt('Enter City: ')
+    function stateCheck(state, city)
+    {
+    const stateArray = [
+          "Alabama",
+          "Alaska",
+          "Arizona",
+          "Arkansas",
+          "California",
+          "Colorado",
+          "Connecticut",
+          "Delaware",
+          "Florida",
+          "Georgia",
+          "Hawaii",
+          "Idaho",
+          "Illinois",
+          "Indiana",
+          "Iowa",
+          "Kansas",
+          "Kentucky",
+          "Louisiana",
+          "Maine",
+          "Maryland",
+          "Massachusetts",
+          "Michigan",
+          "Minnesota",
+          "Mississippi",
+          "Missouri",
+          "Montana",
+          "Nebraska",
+          "Nevada",
+          "New Hampshire",
+          "New Jersey",
+          "New Mexico",
+          "New York",
+          "North Carolina",
+          "North Dakota",
+          "Ohio",
+          "Oklahoma",
+          "Oregon",
+          "Pennsylvania",
+          "Rhode Island",
+          "South Carolina",
+          "South Dakota",
+          "Tennessee",
+          "Texas",
+          "Utah",
+          "Vermont",
+          "Virginia",
+          "Washington",
+          "West Virginia",
+          "Wisconsin",
+          "Wyoming"
+      ];
+    for (let i = 0; i < stateArray.length; i++) {
+        if (state.localeCompare(stateArray[i]) != 0) {
+        }
+        else if(state.localeCompare(stateArray[i]) === 0)
+        {console.log(`| ${stateArray[i]} ${city}`);
+        break;
+        }
+        else { console.error("Please Enter Valid State: ", error)
+         return undefined;
+        }
+    }}
+    stateCheck(state,city)
 
-        const stateArray = [
-            "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida",
-            "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
-            "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",
-            "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
-            "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas",
-            "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
-        ];
 
-        if (!stateArray.includes(state)) {
-            console.log("Invalid state.");
+
+    
+const async axios({
+    method: 'get',
+    url: url,
+    responseType: JSON
+})  
+
+.then(function(response)"")
+
+/*const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': 'fcd1f8b37fmsh10226835c1a10c3p1c739ejsn97ce11c60ac7',
+            'X-RapidAPI-Host': 'zillow56.p.rapidapi.com'
+        },
+        
+    };
+    console.log(url)
+ 
+
+    const response = await fetch(url, options);
+    console.log(response )
+       if (response.status != 200){
+        console.log(url + response.status `\n` + "Invalid Input: " + response.status)
+        return
+       }
+       
+    const result = await response.text();
+    console.log(result)
+    */
+   let result = "null"
+    fs.appendFile('realEstateData.json', result, 'utf-8', (err) => {
+        if (err) {
+            console.error("Cannot write to JSON File:", err);
             return;
         }
-
-        console.log(`| ${state} ${city}`);
-
-        const url = `https://api.bridgedataoutput.com/api/v2/pub/parcels?access_token=${process.env.SERVER_TOKEN}`;
-        console.log(`Making request to: ${url}`)
-        const response = await axios.get(url);
-
-        const data = response.data;
-
-        console.log(data); // Make sure the response contains the expected data structure
-
-        fs.writeFile('realEstateData.json', JSON.stringify(data), 'utf-8', (err) => {
-            if (err) {
-                console.error("Cannot write to JSON File:", err);
-                return;
-            }
-            console.log(`JSON Data written for ${city}, ${state}`);
-        });
-
-        // Assuming data contains an object with profilePhotoSrc and reviewStarsRating properties
-        const picturesURL = data.profilePhotoSrc;
-        const rating = data.reviewStarsRating;
-        console.log("Pictures URL:", picturesURL);
-        console.log("Rating:", rating);
-
-        fs.appendFile('realEstateData.txt', `${picturesURL}\n${rating}`, 'utf-8', (err) => {
-            if (err) {
-                console.error('Cannot write to Pictures file:', err);
-                return;
-            }
-            console.log('Pictures data written to realEstateData.txt');
-        });
-    } catch (error) {
-        console.error("Error:", error.response ? error.response.data : error.message);
-    }
-};
-
-main();
+        console.log(`JSON Data written for ${city}, ${state}`);
+    });
+    
+        try{
+           let data = "./realEstateData.json"
+           let  realEstatePictureData = JSON.parse(data)
+           console.log(realEstatePictureData.profilePhotoSrc)
+            await  (fs.appendFile('realEstateData.txt', realEstatePictureData.profilePhotoSrc , 'utf-8', (err) => {
+                if (err) {
+                    console.error('Cannot write to Pictures file:', err);
+                    return;
+                }
+                console.log('Pictures data written to realEstateData.txt');
+            }));
+        } catch (error) {
+            console.error("Error:", error);
+        }}
+    main()
