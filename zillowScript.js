@@ -62,7 +62,7 @@ const main = async () => {
     for (let i = 0; i < stateArray.length; i++) {
         if (state.localeCompare(stateArray[i]) != 0) {
         }
-        if (state.localeCompare(stateArray[i]) === 0)
+        else if(state.localeCompare(stateArray[i]) === 0)
         {console.log(`| ${stateArray[i]} ${city}`);
         break;
         }
