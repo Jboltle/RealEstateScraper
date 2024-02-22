@@ -1,5 +1,9 @@
+const axios = requite('axios`')
+
 const { error } = require('console');
+
 const fs = require('fs');
+const { url } = require('inspector');
 const prompt = require('prompt-sync')({sigint: true});
 const main = async () => {
     
@@ -75,9 +79,15 @@ const main = async () => {
 
 
     
+const async axios({
+    method: 'get',
+    url: url,
+    responseType: JSON
+})  
 
-   
-    /*const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
+.then(function(response)"")
+
+/*const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
     const options = {
         method: 'GET',
         headers: {
