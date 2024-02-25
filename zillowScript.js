@@ -1,4 +1,4 @@
-const axios = requite('axios`')
+const axios = require('axios')
 
 const { error } = require('console');
 
@@ -77,23 +77,19 @@ const main = async () => {
     stateCheck(state,city)
 
 
-const url = `https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token=${process.env.SERVER_TOKEN}`
+const url = `https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token=${process.env.SERVER_TOKEN   }`
     
-const async axios({
+axios({
     method: 'get',
     url: url,
     responseType: JSON
 })  
 
-<<<<<<< HEAD
-.then(function(response)"")
-=======
 .then(function(response){
     response.data.pipe(fs.writeFile('realEstateData.json'))
 })
 
 console.log(url)
->>>>>>> 0f6edbd (added env file so that I can work in codesapaces)
 
 /*const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
     const options = { 
