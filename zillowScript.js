@@ -1,9 +1,7 @@
 const axios = require('axios')
-
 const { error } = require('console');
-
 const fs = require('fs');
-const { url } = require('inspector');
+const env = require('dotenv').config();
 const prompt = require('prompt-sync')({sigint: true});
 const main = async () => {
     
@@ -77,19 +75,15 @@ const main = async () => {
     stateCheck(state,city)
 
 
-const url = `https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token=${process.env.SERVER_TOKEN   }`
-    
+const  bridgeAPI = `https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token=`
+const url= bridgeAPI.concat(process.env.SERVER_TOKEN)
 axios({
     method: 'get',
     url: url,
     responseType: JSON
 })  
 
-.then(function(response){
-    response.data.pipe(fs.writeFile('realEstateData.json'))
-})
 
-console.log(url)
 
 /*const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
     const options = { 
