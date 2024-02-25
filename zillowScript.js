@@ -4,9 +4,10 @@ const fs = require('fs');
 const env = require('dotenv').config();
 const prompt = require('prompt-sync')({sigint: true});
 const main = async () => {
-    
+    const url = prompt('Enter URL: ')    
       const state = prompt('Enter State: ')
     const city = prompt('Enter City: ')
+
     function stateCheck(state, city)
     {
     const stateArray = [
@@ -76,13 +77,35 @@ const main = async () => {
 
 
 const  bridgeAPI = `https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token=`
-const url= bridgeAPI.concat(process.env.SERVER_TOKEN)
-axios({
-    method: 'get',
-    url: url,
-    responseType: JSON
-})  
+const serverToken = process.env.SERVER_TOKEN
+const accessTokenInsert = (url, serverToken) => { 
+    const accessTokenPattern = /access_token=/;
+    const match = url.match(accessTokenPattern)
+    if (match) {
+        const index = match.index + match[0].length;
+        return url.slice(0, index) + serverToken + url.slice(index)
 
+    }
+    else {return url }
+
+}
+accessTokenInsert(url,serverToken)
+console.log(accessTokenInsert)
+axios.get(url)
+    .then(response => {
+        const data = response.data; // Retrieve the JSON data from the response
+
+        fs.appendFileSync('realEstateData.json', JSON.stringify(data), 'utf-8', (err) => {
+            if (err) {
+                console.error("Cannot write to JSON File:", err);
+                return;
+            }
+            console.log("Data written to realEstateData.json");
+        });
+    })
+    .catch(error => {
+        console.error("Error fetching data:", error);
+    });
 
 
 /*const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
@@ -97,39 +120,8 @@ axios({
     console.log(url)
  
 
-    const response = await fetch(url, options);
-    console.log(response )
-       if (response.status != 200){
-        console.log(url + response.status `\n` + "Invalid Input: " + response.status)
-        return
-       }
-       
-    const result = await response.text();
-    console.log(result)
-    */
-   let result = response()
-    /*fs.appendFile('realEstateData.json', result, 'utf-8', (err) => {
-        if (err) {
-            console.error("Cannot write to JSON File:", err);
-            return;
-        }
-        console.log(`JSON Data written for ${city}, ${state}`);
-    });
-    
-        try{
-           let data = "./realEstateData.json"
-           let  realEstatePictureData = JSON.parse(data)
-           console.log(realEstatePictureData.profilePhotoSrc)
-            await  (fs.appendFile('realEstateData.txt', realEstatePictureData.profilePhotoSrc , 'utf-8', (err) => {
-                if (err) {
-                    console.error('Cannot write to Pictures file:', err);
-                    return;
-                }
-                console.log('Pictures data written to realEstateData.txt');
-            }));
-        } catch (error) {
-            console.error("Error:", error);
-        }}*/
-    }
-    main()
+
+*/
         
+}
+main()
