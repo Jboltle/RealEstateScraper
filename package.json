@@ -6,6 +6,7 @@
     "fs": "^0.0.1-security",
     "module": "^1.2.5",
     "node": "^21.6.2",
+    "package.json": "^2.0.1",
     "prompt-sync": "^4.2.0"
   }
 }

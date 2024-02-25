@@ -71,13 +71,13 @@ const main = async () => {
         break;
         }
         else { console.error("Please Enter Valid State: ", error)
-         return undefined;
+         return undefined
         }
     }}
     stateCheck(state,city)
 
 
-
+const url = `https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token=${process.env.SERVER_TOKEN}`
     
 const async axios({
     method: 'get',
@@ -85,10 +85,18 @@ const async axios({
     responseType: JSON
 })  
 
+<<<<<<< HEAD
 .then(function(response)"")
+=======
+.then(function(response){
+    response.data.pipe(fs.writeFile('realEstateData.json'))
+})
+
+console.log(url)
+>>>>>>> 0f6edbd (added env file so that I can work in codesapaces)
 
 /*const url = `https://zillow56.p.rapidapi.com/search_agents?location=${city}%2C%20${state}`;
-    const options = {
+    const options = { 
         method: 'GET',
         headers: {
             'X-RapidAPI-Key': 'fcd1f8b37fmsh10226835c1a10c3p1c739ejsn97ce11c60ac7',
@@ -109,8 +117,8 @@ const async axios({
     const result = await response.text();
     console.log(result)
     */
-   let result = "null"
-    fs.appendFile('realEstateData.json', result, 'utf-8', (err) => {
+   let result = response()
+    /*fs.appendFile('realEstateData.json', result, 'utf-8', (err) => {
         if (err) {
             console.error("Cannot write to JSON File:", err);
             return;
@@ -131,5 +139,7 @@ const async axios({
             }));
         } catch (error) {
             console.error("Error:", error);
-        }}
+        }}*/
+    }
     main()
+        
