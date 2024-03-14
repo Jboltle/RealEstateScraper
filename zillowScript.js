@@ -44,16 +44,18 @@ const stateCheck = (state, city) => {
 };
 
 const accessTokenInsert = (url, serverToken) => {
-    const accessTokenPattern = /access_token=/;
+    const accessTokenPattern = /SERVER_TOKEN/;
     const match = url.match(accessTokenPattern);
     if (match) {
-        const index = match.index + match[0].length;
-        const apiURL = url.slice(0, index) + serverToken + url.slice(index);
+         apiURL = url.replace(accessTokenPattern, serverToken)
         console.log(apiURL);
         return apiURL;
-    } else {
+    } else if (!match) {
         // If "access_token=" is not found, simply append the server token to the end of the URL
-        return url + "&access_token=" + serverToken;
+        if (url.match(/access_token=/)) {
+            return url + serverToken;
+        }
+        
     }
 };
 
