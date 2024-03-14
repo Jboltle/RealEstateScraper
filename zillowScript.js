@@ -5,10 +5,10 @@ const prompt = require('prompt-sync')({ sigint: true });
 
 const main = async () => {
     const url = prompt('Enter URL: ');
-    if (!url.startsWith("https:")) {
+    /*if (!url.startsWith("https:" || /"https/)) {
         console.error("Please enter a valid URL");
         return;
-    }
+    }*/
 
     const state = prompt('Enter State: ');
     const city = prompt('Enter City: ');
@@ -43,19 +43,52 @@ const stateCheck = (state, city) => {
     }
 };
 
-const accessTokenInsert = (url, serverToken) => {
+const accessTokenInsert = (url, serverToken, filter) => {
     const accessTokenPattern = /SERVER_TOKEN/;
-    const match = url.match(accessTokenPattern);
-    if (match) {
-         apiURL = url.replace(accessTokenPattern, serverToken)
-        console.log(apiURL);
-        return apiURL;
-    } else if (!match) {
-        // If "access_token=" is not found, simply append the server token to the end of the URL
-        if (url.match(/access_token=/)) {
-            return url + serverToken;
+
+    if (url.match(accessTokenPattern)) {
+        // Replace the matched substring with the server token
+        let apiUrl = url.replace(accessTokenPattern, serverToken);
+
+        // Append the filter to the URL if provided
+        if (filter) {
+            const encodedFilter = encodeURIComponent(filter);
+            apiUrl += `&$filter=${encodedFilter}`;
         }
-        
+
+        // Encode the entire URL
+        const encodedUrl = encodeURIComponent(apiUrl);
+
+        console.log("Encoded URL:", encodedUrl);
+        return encodedUrl;
+    } else if (url.includes("access_token=")) {
+        // If "SERVER_TOKEN" is not found but "access_token=" exists, append the server token to the end of the URL
+        let apiUrl = url + serverToken;
+
+        // Append the filter to the URL if provided
+        if (filter) {
+            const encodedFilter = encodeURIComponent(filter);
+            apiUrl += `&$filter=${encodedFilter}`;
+        }
+
+        // Encode the entire URL
+        const encodedUrl = encodeURIComponent(apiUrl);
+
+        console.log("Encoded URL:", encodedUrl);
+        apiUrl = encodedUrl
+        return apiUrl
+    } else {
+        // If neither "SERVER_TOKEN" nor "access_token=" is found, construct a new URL with default parameters
+        const defaultUrl = `https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token=${serverToken}&$top=1000`;
+
+        // Append the filter to the default URL if provided
+        if (filter) {
+            const encodedFilter = encodeURIComponent(filter);
+            defaultUrl += `&$filter=${encodedFilter}`;
+        }
+
+        console.log("Using default URL:", defaultUrl);
+        return defaultUrl;
     }
 };
 
