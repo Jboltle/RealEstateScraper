@@ -43,28 +43,17 @@ const stateCheck = (state, city) => {
     }
 };
 
-const accessTokenInsert = (url, serverToken, filter) => {
-    const accessTokenPattern = /SERVER_TOKEN/;
-    const filter = `$filter=contains(RegionLocationNames,${city})`
-    if (url.match(accessTokenPattern)) {
-        // Replace the matched substring with the server token
-        const apiUrl = url.replace(accessTokenPattern, serverToken);
-
-    } else  if (!apiURL.contains(filter)) {
-            
-    apiURL.concat(filter)
-
-    console.log(apiURL
-        )
-    }
-    else    {
-        // If neither "SERVER_TOKEN" nor "access_token=" is found, construct a new URL with default parameters
-    
-        // Append the filter to the default URL if provided
-       
-
-        console.log("Using default URL:", defaultUrl);
-        return defaultUrl;
+const accessTokenInsert = (url, serverToken) => {
+    const accessTokenPattern = /access_token=/;
+    const match = url.match(accessTokenPattern);
+    if (match) {
+        const index = match.index + match[0].length;
+        const apiURL = url.slice(0, index) + serverToken + url.slice(index);
+        console.log(apiURL);
+        return apiURL;
+    } else {
+        // If "access_token=" is not found, simply append the server token to the end of the URL
+        return url + "&access_token=" + serverToken;
     }
 };
 
