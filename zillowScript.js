@@ -5,10 +5,10 @@ const prompt = require('prompt-sync')({ sigint: true });
 
 const main = async () => {
     const url = prompt('Enter URL: ');
-    if (!url.startsWith("https:")) {
+    /*if (!url.startsWith("https:" || /"https/)) {
         console.error("Please enter a valid URL");
         return;
-    }
+    }*/
 
     const state = prompt('Enter State: ');
     const city = prompt('Enter City: ');
@@ -43,23 +43,32 @@ const stateCheck = (state, city) => {
     }
 };
 
-const accessTokenInsert = (url, serverToken) => {
+const accessTokenInsert = (url, serverToken, filter) => {
     const accessTokenPattern = /SERVER_TOKEN/;
-    const match = url.match(accessTokenPattern);
-    if (match) {
-         apiURL = url.replace(accessTokenPattern, serverToken)
-        console.log(apiURL);
-        return apiURL;
-    } else if (!match) {
-        // If "access_token=" is not found, simply append the server token to the end of the URL
-        if (url.match(/access_token=/)) {
-            return url + serverToken;
-        }
-        
+    const filter = `$filter=contains(RegionLocationNames,${city})`
+    if (url.match(accessTokenPattern)) {
+        // Replace the matched substring with the server token
+        const apiUrl = url.replace(accessTokenPattern, serverToken);
+
+    } else  if (!apiURL.contains(filter)) {
+            
+    apiURL.concat(filter)
+
+    console.log(apiURL
+        )
+    }
+    else    {
+        // If neither "SERVER_TOKEN" nor "access_token=" is found, construct a new URL with default parameters
+    
+        // Append the filter to the default URL if provided
+       
+
+        console.log("Using default URL:", defaultUrl);
+        return defaultUrl;
     }
 };
 
-const ApiRequest = (apiURL) => {
+const ApiRequest = (apiURL, defaultUrl) => {
     axios.get(apiURL)
         .then(response => {
             const data = response.data;
@@ -67,7 +76,15 @@ const ApiRequest = (apiURL) => {
             console.log("Data written to realEstateData.json");
         })
         .catch(error => {
-            console.error("Error fetching data:", error);
+            axios.get(defaultUrl)
+            .then(response => {
+                const data = response.data
+                fs.appendFileSync('realEstateData.json', JSON.stringify(data), 'utf-8');
+                console.log("Data written to realEstateData.json");
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                            })
         });
 };
 
