@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-export const RealEstateData = () => {
+ export const RealEstateData = () => {
     const [url, setUrl] = useState('');
     const [state, setState] = useState('');
-    const [city, setCity] = useState('');
+    const [city , setCity] = useState(" ");
+
     const [isValidState, setIsValidState] = useState(true);
 
     useEffect(() => {
         // Perform API request when component mounts
         if (isValidState) {
-            main();
+            serverAPI();
         }
-    }, [isValidState]); // Only run effect when isValidState changes
+}, [isValidState]); // Only run effect when isValidState changes
 
-    const main = async () => {
+    const serverAPI = async () => {
         const serverToken = process.env.SERVER_TOKEN; // Use REACT_APP_ prefix for environment variables in React
         const apiURL = accessTokenInsert(url, serverToken);
 
@@ -44,10 +45,10 @@ export const RealEstateData = () => {
         <div>
             <h1>Real Estate Data</h1>
             <form onSubmit={handleSubmit}>
-                <label>
+               <label>
                     Enter URL:
-                    <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
-                </label>
+                    <input type="text" value={url} onChange={(e) => setUrl(e.target.value.contains(url ) ? true : console.log("Please Enter Valid URL"))} /> </label>
+\                
                 <br />
                 <label>
                     Enter State:
@@ -61,9 +62,7 @@ export const RealEstateData = () => {
                 <br />
                 <button type="submit">Submit</button>
             </form>
-            {/* Render results here */}
         </div>
     );
 };
 
-export default RealEstateData;
