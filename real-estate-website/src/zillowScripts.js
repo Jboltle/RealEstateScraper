@@ -1,68 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import './App.css'
+import axios from 'axios'
 
- export const RealEstateData = () => {
-    const [url, setUrl] = useState('');
-    const [state, setState] = useState('');
-    const [city , setCity] = useState(" ");
 
-    const [isValidState, setIsValidState] = useState(true);
 
-    useEffect(() => {
-        // Perform API request when component mounts
-        if (isValidState) {
-            serverAPI();
-        }
-}, [isValidState]); // Only run effect when isValidState changes
+export const RealEstateData = () => {
+    let access_token = "8522541bd0b01e069d1debef37a934dc"
+    let url = "https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token="
+    console.log(url)
+    const [state, setState] = useState("")
+    const [city, setCity] = useState("")
+    const [id, setID] = useState("")
+    let [originalURL, setUrl] = useState("")
 
-    const serverAPI = async () => {
-        const serverToken = process.env.SERVER_TOKEN; // Use REACT_APP_ prefix for environment variables in React
-        const apiURL = accessTokenInsert(url, serverToken);
 
-        ApiRequest(apiURL);
-    };
+    const handleSubmit = (url, e) => {
+        e.preventDefault()
 
-    const stateCheck = (state, city) => {
-        // Implement state check logic here
-        // Set isValidState based on the result
-        setIsValidState(true); // Placeholder, replace with actual logic
-    };
+    const parameters = {
+        originalURL: url,
+    access_token: access_token ,
+    id: id,
+    state: state,
+    city: city
+}
+    url = url.concat(parameters.access_token,parameters.id,parameters.state,parameters.city)    
+    console.log(url)
 
-    const accessTokenInsert = (url, serverToken) => {
-        // Implement accessTokenInsert logic here
-        return url; // Placeholder, replace with actual logic
-    };
+}
 
-    const ApiRequest = (apiURL, defaultUrl) => {
-        // Implement ApiRequest logic here
-    };
+const getRequest =  (url) =>
+    {
+axios.get(url).then(response => {console.log(response.data.data)}).catch(error => {console.log(error.message)})
+    }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        stateCheck(state, city);
-    };
 
     return (
         <div>
-            <h1>Real Estate Data</h1>
+            <h1>Real Estate Data
+            </h1>
             <form onSubmit={handleSubmit}>
-               <label>
-                    Enter URL:
-                    <input type="text" value={url} onChange={(e) => setUrl(e.target.value.contains(url ) ? true : console.log("Please Enter Valid URL"))} /> </label>
-\                
-                <br />
-                <label>
+               <label className="url-name" >
+                Enter ID:
+
+                <input type="text"  value = {id} onChange={(e) => setID(e.target.value)} />
+                </label>
+                <br></br>
+
+                <label className="state-name">
                     Enter State:
                     <input type="text" value={state} onChange={(e) => setState(e.target.value)} />
                 </label>
-                <br />
-                <label>
+                <br></br>
+                <label className='city-name'>
                     Enter City:
                     <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
                 </label>
-                <br />
-                <button type="submit">Submit</button>
+<br></br>
+                <button type="submit"  >Submit</button>
             </form>
-        </div>
-    );
-};
+            <br></br>
+            <br/><br />
+            <br /><br />
+            <img className="houseImage" src="/public/pexels-binyaminmellish-106399.jpg"  alt='' width=" 200" height="200" />
+        </div> 
 
+    );
+
+}
