@@ -5,9 +5,12 @@ import { VideoPlayer } from './VideoPlayer';
   return (
     <div className="App">
       <RealEstateData /> {/* Render the RealEstateData component */}
+
       <div className='VideoPlayer'>
         <VideoPlayer></VideoPlayer>
+
         </div>
+
     </div>
   );
 }

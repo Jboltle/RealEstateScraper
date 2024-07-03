@@ -3,7 +3,6 @@ import './App.css'
 import axios from 'axios'
 
 
-
 export const RealEstateData = () => {
     let access_token = "8522541bd0b01e069d1debef37a934dc"
     let url = "https://api.bridgedataoutput.com/api/v2/OData/reviews/Reviews?access_token="
@@ -39,6 +38,11 @@ axios.get(url).then(response => {console.log(response.data.data)}).catch(error =
         <div>
             <h1>Real Estate Data
             </h1>
+
+
+            <div>
+                
+            </div>
             <form onSubmit={handleSubmit}>
                <label className="url-name" >
                 Enter ID:
