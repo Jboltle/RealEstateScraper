@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css'
 import axios from 'axios'
-
+import  Input  from '@geist-ui/core/dist/input';
 
 export const RealEstateData = () => {
     let access_token = "8522541bd0b01e069d1debef37a934dc"
@@ -41,25 +41,20 @@ axios.get(url).then(response => {console.log(response.data.data)}).catch(error =
 
 
             <div>
-                
+
             </div>
             <form onSubmit={handleSubmit}>
-               <label className="url-name" >
-                Enter ID:
-
-                <input type="text"  value = {id} onChange={(e) => setID(e.target.value)} />
-                </label>
+               <Input aria-labelledby="Demo input" placeholder="Enter ID:" size= "small"/>
                 <br></br>
 
-                <label className="state-name">
-                    Enter State:
-                    <input type="text" value={state} onChange={(e) => setState(e.target.value)} />
-                </label>
-                <br></br>
-                <label className='city-name'>
-                    Enter City:
-                    <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
-                </label>
+               
+                    <Input aria-labelledby="Demo input" placeholder="Choose State:" size= "small" />
+               
+                <br></br>   
+                
+               
+                <Input aria-labelledby="Demo input" placeholder="Enter City:" size= "small" />
+               
 <br></br>
                 <button type="submit"  >Submit</button>
             </form>
