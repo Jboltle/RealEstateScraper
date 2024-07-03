@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import './App.css'
 import axios from 'axios'
-import  Input  from '@geist-ui/core/dist/input';
+
+import { Input } from '@geist-ui/core';
+
+
+
+
 
 export const RealEstateData = () => {
     let access_token = "8522541bd0b01e069d1debef37a934dc"
